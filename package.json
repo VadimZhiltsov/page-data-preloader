@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+   "build": "babel src -d dist",
+   "server": "node dist/app.js"
   },
+
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -16,6 +19,8 @@
     "jsdom": "^7.2.2"
   },
   "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.4.0",
+    "babel-plugin-transform-es2015-classes": "^6.4.5",
     "babel-plugin-transform-runtime": "^6.4.3",
     "babel-runtime": "^6.3.19"
   }
