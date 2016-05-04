@@ -5,8 +5,11 @@ import fs from 'fs';
 import url from 'url';
 import http from 'http';
 import Parser from './parser/parser';
+import minimist from 'minimist';
 
-const port = process.argv[2] || '8080';
+var argv = minimist(process.argv.slice(2));
+
+const port = argv.port || '8080';
 const jquery = fs.readFileSync("./node_modules/jquery/dist/jquery.js", "utf-8");
 
 http.createServer(async function(req, res) {

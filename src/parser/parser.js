@@ -31,6 +31,7 @@ export default class Parser {
     this.parseTitle(hash);
     this.parseImage(hash);
     this.parseVideo(hash);
+    this.parseFavicon(hash);
 
     return hash;
   }
@@ -50,6 +51,14 @@ export default class Parser {
     
     if(title) {
         hash.title = title;
+    }
+  }
+
+  parseFavicon(hash){
+    let icon = this.$('link[rel="icon"]').attr('href');
+    
+    if(icon) {
+      hash.favicon = icon;
     }
   }
 
