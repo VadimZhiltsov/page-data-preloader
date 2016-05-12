@@ -25,9 +25,10 @@ http.createServer(async function(req, res) {
 	try{
 		var content = await getPageContent(query.url);
 	} catch(e) {
-		respondJSON(res, 400, {
+		return respondJSON(res, 400, {
 			error: e.toString()
 		});
+
 	}
 
 	let parser = new Parser(content);
