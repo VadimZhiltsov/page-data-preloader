@@ -9,7 +9,16 @@ export default class Parser {
         this.window = window;
         this.$ = window.$;
         this.encoding = this.getCharset();
-        this._translator = new Iconv(this.encoding,'utf-8');
+        
+        if (this.encoding !==  'utf-8') {
+          this._translator = new Iconv(this.encoding,'utf-8');
+        } else {
+          this._translator = {
+            convert(text) {
+              return text || "";
+            }
+          }
+        }
 
         this.data = this.parse();
     } catch(e) {
@@ -57,9 +66,11 @@ export default class Parser {
   parseFavicon(hash){
     let icon = this.$('link[rel="icon"]').attr('href');
     
-    if(icon) {
-      hash.favicon = icon;
+    if(!icon) {
+      icon = this.$('link[rel="shortcut icon"]').attr('href');  
     }
+
+    hash.favicon = icon;
   }
 
   parseImage(hash){
@@ -78,7 +89,7 @@ export default class Parser {
     }
     
     if(typeof img === 'string' && img.indexOf('http') !== 0) {
-        img = `${window.location.protocol}\/\/${window.location.host}/${img}`;
+        img = `${this.window.location.protocol}\/\/${this.window.location.host}/${img}`;
     }
     
     hash.img = img;
