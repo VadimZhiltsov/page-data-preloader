@@ -70,6 +70,9 @@ export default class Parser {
     if(!icon) {
       icon = this.$('link[rel="shortcut icon"]').attr('href');  
     }
+    if(typeof icon === 'string' && icon.indexOf('//') !== 0) {
+      icon = `${this.window.location.protocol}${icon}`;
+    }
 
     if(typeof icon === 'string' && icon.indexOf('http') !== 0) {
         icon = `${this.window.location.protocol}\/\/${this.window.location.host}/${icon}`;
