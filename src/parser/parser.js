@@ -70,6 +70,10 @@ export default class Parser {
       icon = this.$('link[rel="shortcut icon"]').attr('href');  
     }
 
+    if(typeof icon === 'string' && icon.indexOf('http') !== 0) {
+        icon = `${this.window.location.protocol}\/\/${this.window.location.host}/${icon}`;
+    }
+
     hash.favicon = icon;
   }
 
