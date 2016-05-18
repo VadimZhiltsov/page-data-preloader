@@ -48,7 +48,7 @@ export default class Parser {
 
   parseDesctiption(hash){
     let text = this.$('meta[name="description"]').attr('content');
-    let description = this._translator.convert(text);
+    let description = this._translator.convert(text).toString();
     
     if(description) {
         hash.description = description;
@@ -57,7 +57,7 @@ export default class Parser {
 
   parseTitle(hash){
     let text = this.$('title').text();
-    let title = this._translator.convert(text);
+    let title = this._translator.convert(text).toString();
     
     if(title) {
         hash.title = title;
