@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "babel src -d dist",
-    "server": "node dist/app.js"
+    "server": "babel src -d dist; node dist/app.js"
   },
   "author": "",
   "license": "ISC",

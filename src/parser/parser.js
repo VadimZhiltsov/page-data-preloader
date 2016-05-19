@@ -1,7 +1,7 @@
 const mp4Regex = /video\/mp4/;
 const Iconv = require('iconv').Iconv;
 const charsetRegex = /charset=(\S+)$/;
-const UTF8 = 'utf-8';
+const UTF8 = 'UTF-8';
 
 export default class Parser {  
 
@@ -11,7 +11,7 @@ export default class Parser {
     this.$ = window.$;
     this.encoding = this.getCharset();
     
-    if (this.encoding !==  UTF8 && this.encoding !== "windows-1251") {
+    if (this.encoding !==  UTF8) {
       this._translator = new Iconv(this.encoding, UTF8);
     } else {
       this._translator = {
@@ -28,7 +28,11 @@ export default class Parser {
   }
 
   getCharset(){
-    const charsetStr = this.$('meta[http-equiv="content-type"]').attr('content');
+    const _this = this;
+    const charsetStr = this.$('meta[http-equiv]').filter(function() {
+      return _this.$(this).attr('http-equiv').toLowerCase() === 'content-type';
+    }).attr('content');
+
     const charsetFindings = charsetRegex.exec(charsetStr);
 
     return charsetFindings && charsetFindings.length ? charsetFindings[1] : UTF8;
@@ -48,7 +52,7 @@ export default class Parser {
 
   parseDesctiption(hash){
     let text = this.$('meta[name="description"]').attr('content');
-    let description = this._translator.convert(text).toString();
+    let description = this._translator.convert(text || '').toString();
     
     if(description) {
         hash.description = description;
@@ -57,8 +61,7 @@ export default class Parser {
 
   parseTitle(hash){
     let text = this.$('title').text();
-    let title = this._translator.convert(text).toString();
-    
+    let title = this._translator.convert(text || '').toString();
     if(title) {
         hash.title = title;
     }
@@ -70,7 +73,7 @@ export default class Parser {
     if(!icon) {
       icon = this.$('link[rel="shortcut icon"]').attr('href');  
     }
-    if(typeof icon === 'string' && icon.indexOf('//') === 0) {
+    if(typeof icon === 'string' && icon.indexOf('//') !== 0) {
       icon = `${this.window.location.protocol}${icon}`;
     }
 
